@@ -1,383 +1,383 @@
-from waypy.list import lista
+from waypy.list import list
 
-class busca(object):
+class search(object):
 
-    def amplitude(self, inicio, fim, nos, grafo):
+    def amplitude(self, begin, end, nodes, graph):
 
-        # manipular a FILA para a busca
-        l1 = lista()
+        # manipulate the queue for the seach
+        l1 = list()
 
-        # cópia para apresentar o caminho (somente inserção)
-        l2 = lista()
+        # copy to present the way (insertion only)
+        l2 = list()
 
-        # insere ponto inicial como nó raiz da árvore
-        l1.insereUltimo(inicio,0,None)
-        l2.insereUltimo(inicio,0,None)
+        # insert start point as root node of tree
+        l1.insertLast(begin,0,None)
+        l2.insertLast(begin,0,None)
 
-        # controle de nós visitados
-        visitado = []
-        linha = []
-        linha.append(inicio)
-        linha.append(0)
-        visitado.append(linha)
+        # control of visited nodes
+        visited = []
+        line = []
+        line.append(begin)
+        line.append(0)
+        visited.append(line)
 
-        while l1.vazio() == False:
-            # remove o primeiro da fila
-            atual = l1.deletaPrimeiro()
-            if atual is None: break
+        while l1.empty() == False:
+            # remove the first from queue
+            current = l1.deleteFirst()
+            if current is None: break
 
-            ind = nos.index(atual.valor1)
+            ind = nodes.index(current.value1)
 
-            # varre todos as conexões dentro do grafo a partir de atual
-            for i in range(len(grafo[ind])):
+            # scan all connections within the graph starting from current
+            for i in range(len(graph[ind])):
 
-                novo = grafo[ind][i]
-                # pressuponho que não foi visitado
+                new = graph[ind][i]
+                # assuming not visited
                 flag = True
 
-                # controle de nós repetidos
-                for j in range(len(visitado)):
-                    if visitado[j][0]==novo:
-                        if visitado[j][1]<=(atual.valor2+1):
+                # repeat node control
+                for j in range(len(visited)):
+                    if visited[j][0]==new:
+                        if visited[j][1]<=(current.value2+1):
                             flag = False
                         else:
-                            visitado[j][1]=atual.valor2+1
+                            visited[j][1]=current.value2+1
                         break
                 
-                # se não foi visitado inclui na fila
+                # if not visited, include it in the queue
                 if flag:
-                    l1.insereUltimo(novo, atual.valor2 + 1, atual)
-                    l2.insereUltimo(novo, atual.valor2 + 1, atual)
+                    l1.insertLast(new, current.value2 + 1, current)
+                    l2.insertLast(new, current.value2 + 1, current)
 
-                    # marca como visitado
-                    linha = []
-                    linha.append(novo)
-                    linha.append(atual.valor2+1)
-                    visitado.append(linha)
+                    # marks as visited
+                    line = []
+                    line.append(new)
+                    line.append(current.value2+1)
+                    visited.append(line)
 
-                    # verifica se é o objetivo
-                    if novo == fim:
-                        caminho = []
-                        caminho += l2.exibeCaminho()
-                        #print("Fila:\n",l1.exibeLista())
-                        #print("\nÁrvore de busca:\n",l2.exibeLista())
-                        return caminho
+                    # check if it's the goal
+                    if new == end:
+                        way = []
+                        way += l2.showway()
+                        #print("Fila:\n",l1.showlist())
+                        #print("\nÁrvore de busca:\n",l2.showlist())
+                        return way
 
-        return "caminho não encontrado"
+        return "way not found"
 
 
-    def profundidade(self, inicio, fim, nos, grafo):
+    def depth(self, begin, end, nodes, graph):
         
-        caminho = []
+        way = []
 
-        # manipular a FILA para a busca
-        l1 = lista()
+        # manipulate the QUEUE for the search
+        l1 = list()
 
-        # cópia para apresentar o caminho (somente inserção)
-        l2 = lista()
+        # copy to present the way (insertion only)
+        l2 = list()
 
-        # insere ponto inicial como nó raiz da árvore
-        l1.insereUltimo(inicio,0,None)
-        l2.insereUltimo(inicio,0,None)
+        # insert start point as root node of tree
+        l1.insertLast(begin,0,None)
+        l2.insertLast(begin,0,None)
 
-        # controle de nós visitados
-        visitado = []
-        linha = []
-        linha.append(inicio)
-        linha.append(0)
-        visitado.append(linha)
+        # control of visited nodes
+        visited = []
+        line = []
+        line.append(begin)
+        line.append(0)
+        visited.append(line)
 
 
-        while l1.vazio() == False:
-            # remove o primeiro da fila
-            atual = l1.deletaUltimo()
-            if atual is None: break
+        while l1.empty() == False:
+            # remove the first from queue
+            current = l1.deleteLast()
+            if current is None: break
 
-            ind = nos.index(atual.valor1)
+            ind = nodes.index(current.value1)
 
-            # varre todos as conexões dentro do grafo a partir de atual
-            for i in range(len(grafo[ind])-1,-1,-1):
+            # scan all connections within the graph starting from current
+            for i in range(len(graph[ind])-1,-1,-1):
 
-                novo = grafo[ind][i]
-                #print("\tFilho de atual: ",novo)
-                flag = True  # pressuponho que não foi visitado
+                new = graph[ind][i]
+                #print("\tFilho de current: ",new)
+                flag = True  # assuming not visited
 
-                # para cada conexão verifica se já foi visitado
-                for j in range(len(visitado)):
-                    if visitado[j][0]==novo:
-                        if visitado[j][1]<=(atual.valor2+1):
+                # for each connection checks if it has already been visited
+                for j in range(len(visited)):
+                    if visited[j][0]==new:
+                        if visited[j][1]<=(current.value2+1):
                             flag = False
                         else:
-                            visitado[j][1]=atual.valor2+1
+                            visited[j][1]=current.value2+1
                         break
                     
                 
-                # se não foi visitado inclui na fila
+                # if not visited, include it in the queue
                 if flag:
-                    l1.insereUltimo(novo, atual.valor2 + 1, atual)
-                    l2.insereUltimo(novo, atual.valor2 + 1, atual)
+                    l1.insertLast(new, current.value2 + 1, current)
+                    l2.insertLast(new, current.value2 + 1, current)
 
-                    # marca como visitado
-                    linha = []
-                    linha.append(novo)
-                    linha.append(atual.valor2+1)
-                    visitado.append(linha)
+                    # marks as visited
+                    line = []
+                    line.append(new)
+                    line.append(current.value2+1)
+                    visited.append(line)
 
-                    # verifica se é o objetivo
-                    if novo == fim:
-                        caminho += l2.exibeCaminho()
-                        #print("Árvore de busca:\n",l2.exibeLista())
-                        return caminho
+                    # check if it's the goal
+                    if new == end:
+                        way += l2.showway()
+                        #print("Árvore de busca:\n",l2.showlist())
+                        return way
 
-        return "caminho não encontrado"
+        return "way não encontrado"
 
 
-    def profundidade_limitada(self, inicio, fim, limite, nos, grafo):
+    def limitaded_depth(self, begin, end, limit, nodes, graph):
         
-        caminho = []
+        way = []
 
-        # manipular a FILA para a busca
-        l1 = lista()
+        # manipulate the queue for the search
+        l1 = list()
 
-        # cópia para apresentar o caminho (somente inserção)
-        l2 = lista()
+        # copy to present the way (insertion only)
+        l2 = list()
 
-        # insere ponto inicial como nó raiz da árvore
-        l1.insereUltimo(inicio,0,None)
-        l2.insereUltimo(inicio,0,None)
+        # insert start point as root node of tree
+        l1.insertLast(begin,0,None)
+        l2.insertLast(begin,0,None)
 
-        # controle de nós visitados
-        visitado = []
-        linha = []
-        linha.append(inicio)
-        linha.append(0)
-        visitado.append(linha)
+        # control of visited nodes
+        visited = []
+        line = []
+        line.append(begin)
+        line.append(0)
+        visited.append(line)
 
 
-        while l1.vazio() == False:
-            # remove o primeiro da fila
-            atual = l1.deletaUltimo()
-            if atual is None: break
+        while l1.empty() == False:
+            # remove the first from queue
+            current = l1.deleteLast()
+            if current is None: break
 
-            if atual.valor2 < limite:
-                ind = nos.index(atual.valor1)
+            if current.value2 < limit:
+                ind = nodes.index(current.value1)
     
-                # varre todos as conexões dentro do grafo a partir de atual
-                for i in range(len(grafo[ind])-1,-1,-1):
+                # scan all connections within the graph starting from current
+                for i in range(len(graph[ind])-1,-1,-1):
     
-                    novo = grafo[ind][i]
-                    #print("\tFilho de atual: ",novo)
-                    flag = True  # pressuponho que não foi visitado
+                    new = graph[ind][i]
+                    #print("\tFilho de current: ",new)
+                    flag = True  # assuming not visited
     
-                    # para cada conexão verifica se já foi visitado
-                    for j in range(len(visitado)):
-                        if visitado[j][0]==novo:
-                            if visitado[j][1]<=(atual.valor2+1):
+                    # for each connection checks if it has already been visited
+                    for j in range(len(visited)):
+                        if visited[j][0]==new:
+                            if visited[j][1]<=(current.value2+1):
                                 flag = False
                             else:
-                                visitado[j][1]=atual.valor2+1
+                                visited[j][1]=current.value2+1
                             break
                         
                     
-                    # se não foi visitado inclui na fila
+                    # if not visited, include it in the queue
                     if flag:
-                        l1.insereUltimo(novo, atual.valor2 + 1, atual)
-                        l2.insereUltimo(novo, atual.valor2 + 1, atual)
+                        l1.insertLast(new, current.value2 + 1, current)
+                        l2.insertLast(new, current.value2 + 1, current)
     
-                        # marca como visitado
-                        linha = []
-                        linha.append(novo)
-                        linha.append(atual.valor2+1)
-                        visitado.append(linha)
+                        # marks as visited
+                        line = []
+                        line.append(new)
+                        line.append(current.value2+1)
+                        visited.append(line)
     
-                        # verifica se é o objetivo
-                        if novo == fim:
-                            caminho += l2.exibeCaminho()
-                            #print("Árvore de busca:\n",l2.exibeLista())
-                            return caminho
+                        # check if it's the goal
+                        if new == end:
+                            way += l2.showway()
+                            #print("Árvore de busca:\n",l2.showlist())
+                            return way
 
-        return "caminho não encontrado"
+        return "way not found"
 
 
-    def aprofundamento_iterativo(self, inicio, fim, nos, grafo):
+    def iterative_deepening(self, begin, end, nodes, graph):
         
-        for limite in range(len(nos)):
-            caminho = []
+        for limit in range(len(nodes)):
+            way = []
     
-            # manipular a FILA para a busca
-            l1 = lista()
+            # manipulate the queue for the search
+            l1 = list()
     
-            # cópia para apresentar o caminho (somente inserção)
-            l2 = lista()
+            # copy to present the way (insertion only)
+            l2 = list()
     
-            # insere ponto inicial como nó raiz da árvore
-            l1.insereUltimo(inicio,0,None)
-            l2.insereUltimo(inicio,0,None)
+            # insert start point as root node of tree
+            l1.insertLast(begin,0,None)
+            l2.insertLast(begin,0,None)
     
-            # controle de nós visitados
-            visitado = []
-            linha = []
-            linha.append(inicio)
-            linha.append(0)
-            visitado.append(linha)
+            # control of visited nodes
+            visited = []
+            line = []
+            line.append(begin)
+            line.append(0)
+            visited.append(line)
     
     
-            while l1.vazio() is not None:
-                # remove o primeiro da fila
-                atual = l1.deletaUltimo()
-                if atual is None: break
+            while l1.empty() is not None:
+                # remove the first from queue
+                current = l1.deleteLast()
+                if current is None: break
     
-                if (atual.valor2) < limite:
-                    ind = nos.index(atual.valor1)
+                if (current.value2) < limit:
+                    ind = nodes.index(current.value1)
         
-                    # varre todos as conexões dentro do grafo a partir de atual
-                    for i in range(len(grafo[ind])-1,-1,-1):
+                    # scan all connections within the graph starting from current
+                    for i in range(len(graph[ind])-1,-1,-1):
         
-                        novo = grafo[ind][i]
-                        #print("\tFilho de atual: ",novo)
-                        flag = True  # pressuponho que não foi visitado
+                        new = graph[ind][i]
+                        #print("\tFilho de current: ",new)
+                        flag = True  # assuming not visited
         
-                        # para cada conexão verifica se já foi visitado
-                        for j in range(len(visitado)):
-                            if visitado[j][0]==novo:
-                                if visitado[j][1]<=(atual.valor2+1):
+                        # for each connection checks if it has already been visited
+                        for j in range(len(visited)):
+                            if visited[j][0]==new:
+                                if visited[j][1]<=(current.value2+1):
                                     flag = False
                                 else:
-                                    visitado[j][1]=atual.valor2+1
+                                    visited[j][1]=current.value2+1
                                 break
                             
                         
-                        # se não foi visitado inclui na fila
+                        # if not visited, include it in the queue
                         if flag:
-                            l1.insereUltimo(novo, atual.valor2 + 1, atual)
-                            l2.insereUltimo(novo, atual.valor2 + 1, atual)
+                            l1.insertLast(new, current.value2 + 1, current)
+                            l2.insertLast(new, current.value2 + 1, current)
         
-                            # marca como visitado
-                            linha = []
-                            linha.append(novo)
-                            linha.append(atual.valor2+1)
-                            visitado.append(linha)
+                            # marks as visited
+                            line = []
+                            line.append(new)
+                            line.append(current.value2+1)
+                            visited.append(line)
         
-                            # verifica se é o objetivo
-                            if novo == fim:
-                                caminho += l2.exibeCaminho()
-                                #print("Árvore de busca:\n",l2.exibeLista())
-                                return caminho
+                            # check if it's the goal
+                            if new == end:
+                                way += l2.showway()
+                                #print("Árvore de busca:\n",l2.showlist())
+                                return way
 
-        return "caminho não encontrado"
+        return "way not found"
 
-    def bidirecional(self, inicio, fim, nos, grafo):
+    def bidirecional(self, begin, end, nodes, graph):
 
-        # listas para a busca a partir da origem - busca 1
-        l1 = lista()      # busca na FILA
-        l2 = lista()      # cópia da árvore completa
+        # lists for searching from source - search 1
+        l1 = list()      # queue search
+        l2 = list()      # full tree copy
 
-        # listas para a busca a partir da destino -  busca 2
-        l3 = lista()      # busca na FILA
-        l4 = lista()      # cópia da árvore completa
+        # lists for searching from destination - search 2
+        l3 = list()      # queue search
+        l4 = list()      # full tree copy
 
-        # cria estrutura para controle de nós visitados
-        visitado = []
+        # creates structure to control visited nodes
+        visited = []
 
-        l1.insereUltimo(inicio,0,None)
-        l2.insereUltimo(inicio,0,None)
-        linha = []
-        linha.append(inicio)
-        linha.append(1)
-        visitado.append(linha)
+        l1.insertLast(begin,0,None)
+        l2.insertLast(begin,0,None)
+        line = []
+        line.append(begin)
+        line.append(1)
+        visited.append(line)
         
-        l3.insereUltimo(fim,0,None)
-        l4.insereUltimo(fim,0,None)
-        linha = []
-        linha.append(fim)
-        linha.append(2)
-        visitado.append(linha)
+        l3.insertLast(end,0,None)
+        l4.insertLast(end,0,None)
+        line = []
+        line.append(end)
+        line.append(2)
+        visited.append(line)
         
         while True:
             
-            # EXECUÇÃO DO PRIMEIRO AMPLITUDE - BUSCA 1
+            # EXECUTION OF THE FIRST AMPLITUDE - SEARCH 1
             flag1 = True
             while flag1:
-                atual = l1.deletaPrimeiro()
-                ind = nos.index(atual.valor1)
-                for i in range(len(grafo[ind])):
-                    novo = grafo[ind][i]
+                current = l1.deleteFirst()
+                ind = nodes.index(current.value1)
+                for i in range(len(graph[ind])):
+                    new = graph[ind][i]
                     flag2 = True
                     flag3 = False
-                    for j in range(len(visitado)):
-                        if visitado[j][0]==novo:
-                            if visitado[j][1] == 1:    # visitado na mesma árvore
+                    for j in range(len(visited)):
+                        if visited[j][0]==new:
+                            if visited[j][1] == 1:    # visited in the same tree
                                 flag2 = False
-                            else:                      # visitado na outra árvore
+                            else:                      # visited in the other tree
                                 flag3 = True
                             break
                     # for j
                         
                     if flag2:
-                        l1.insereUltimo(novo, atual.valor2 + 1 , atual)
-                        l2.insereUltimo(novo, atual.valor2 + 1, atual)
+                        l1.insertLast(new, current.value2 + 1 , current)
+                        l2.insertLast(new, current.value2 + 1, current)
                         
                         if flag3:
-                            caminho = []
-                            caminho = l2.exibeCaminho()
-                            #caminho = caminho[::-1]
-                            caminho += l4.exibeCaminho1(novo)
-                            return caminho
+                            way = []
+                            way = l2.showway()
+                            #way = way[::-1]
+                            way += l4.showway1(new)
+                            return way
                         else:
-                            linha = []
-                            linha.append(novo)
-                            linha.append(1)
-                            visitado.append(linha)
+                            line = []
+                            line.append(new)
+                            line.append(1)
+                            visited.append(line)
                         # if flag3
                     # if flag2
                 # for i
                 
                 
-                if(l1.vazio()!=True):
-                    aux = l1.primeiro()
-                    if aux.valor2 == atual.valor2:
+                if(l1.empty()!=True):
+                    aux = l1.first()
+                    if aux.value2 == current.value2:
                         flag1 = True
                     else:
                         flag1 = False                
 
-            # EXECUÇÃO DO SEGUNDO AMPLITUDE - BUSCA 2
+            # EXECUTION OF THE SECOND RANGE - SEARCH 2
             flag1 = True
             while flag1:
-                atual = l3.deletaPrimeiro()
-                if atual==None:
+                current = l3.deleteFirst()
+                if current==None:
                     break
-                ind = nos.index(atual.valor1)
-                for i in range(len(grafo[ind])):
-                    novo = grafo[ind][i]
+                ind = nodes.index(current.value1)
+                for i in range(len(graph[ind])):
+                    new = graph[ind][i]
                     flag2 = True
                     flag3 = False
-                    for j in range(len(visitado)):
-                        if visitado[j][0]==novo:
-                            if visitado[j][1] == 2:
+                    for j in range(len(visited)):
+                        if visited[j][0]==new:
+                            if visited[j][1] == 2:
                                 flag2 = False
                             else:
                                 flag3 = True
                             break
                         
                     if flag2:
-                        l3.insereUltimo(novo, atual.valor2 + 1 , atual)
-                        l4.insereUltimo(novo, atual.valor2 + 1, atual)
+                        l3.insertLast(new, current.value2 + 1 , current)
+                        l4.insertLast(new, current.value2 + 1, current)
                         
                         if flag3:
-                            caminho = []
-                            caminho = l4.exibeArvore()
-                            caminho = caminho[::-1]
-                            caminho += l2.exibeArvore1(novo)
-                            return caminho
+                            way = []
+                            way = l4.showArvore()
+                            way = way[::-1]
+                            way += l2.showArvore1(new)
+                            return way
                         else:
-                            linha = []
-                            linha.append(novo)
-                            linha.append(2)
-                            visitado.append(linha)
+                            line = []
+                            line.append(new)
+                            line.append(2)
+                            visited.append(line)
                         
-                if(l3.vazio() != True):
-                    aux = l3.primeiro()
-                    if(atual.valor2 == aux.valor2):
+                if(l3.empty() != True):
+                    aux = l3.first()
+                    if(current.value2 == aux.value2):
                         flag1 = True
                     else:
                         flag1 = False
